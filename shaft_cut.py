@@ -29,6 +29,7 @@ HALFSTEP_SEQUENCE = (
 )
 # Defines a number of halfsteps in sequence
 HALFSTEPS_COUNT = len(HALFSTEP_SEQUENCE)
+STEP_PER_MM = 6.25
 # Defines the number of pins used in sequence
 HALFSTEP_PINS_COUNT = len(HALFSTEP_SEQUENCE[0])
 
@@ -42,12 +43,12 @@ def main() -> None:
     pin_setup()
 
     while True:
-        print("Input step count: ")
-        steps = int(input())
-        if not isinstance(steps, int):
+        print("Input distance in mm (negatives are accepted): ")
+        dist = int(input())
+        if not isinstance(dist, int):
             raise TypeError('Number of steps must be an int')
         else:
-            push(steps, 0.01)
+            push(dist, 0.01)
     
 
 def pin_setup() -> None:
@@ -68,10 +69,11 @@ def pin_cleanup() -> None:
     """
     GPIO.cleanup()  # type: ignore
 
-def push(step_count: int, delay: float) -> None:
+def push(dist: int, delay: float) -> None:
     """
     Turns motors a number of rotations in an amount of time in a direction.
     """
+    step_count = 6.25 * dist
     if step_count < 0:
         direction = Direction.BACKWARD
     else:
