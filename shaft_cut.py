@@ -18,7 +18,7 @@ class Direction(Enum):
     BACKWARD = -1
 
 # Refered constants
-MINIMUM_MOTOR_DELAY = 0.001
+MINIMUM_MOTOR_DELAY = 0.0001
 
 # Half-step stepper motor sequence
 HALFSTEP_SEQUENCE = (
@@ -35,7 +35,7 @@ HALFSTEP_PINS_COUNT = len(HALFSTEP_SEQUENCE[0])
 
 # MOTOR_PUSHER_PINS = (31, 33, 35, 37)
 MOTOR_PUSHER_PINS = (29, 31, 33, 35)
-MOTOR_LIFT_PINS = (11, 13, 15, 16)
+MOTOR_LIFT_PINS = (32, 36, 38, 40)
 
 
 def main() -> None:
@@ -45,10 +45,13 @@ def main() -> None:
     while True:
         print("Input distance in mm (negatives are accepted): ")
         dist = int(input())
-        if not isinstance(dist, int):
-            raise TypeError('Number of steps must be an int')
-        else:
-            push(dist, 0.00001)
+        move_motor(dist, 0.00001, 'push')
+
+        print("Input desired height in mm: ")
+        h = int(input())
+        move_motor(h, 0.0001, 'lift')
+
+
     
 
 def pin_setup() -> None:
@@ -69,7 +72,7 @@ def pin_cleanup() -> None:
     """
     GPIO.cleanup()  # type: ignore
 
-def push(dist: int, delay: float) -> None:
+def move_motor(dist: int, delay: float, move_type: str) -> None:
     """
     Turns motors a number of rotations in an amount of time in a direction.
     """
@@ -79,12 +82,20 @@ def push(dist: int, delay: float) -> None:
     else:
         direction = Direction.FORWARD
 
+    if move_type == 'lift':
+        pins = MOTOR_LIFT_PINS
+    elif move_type == 'push':
+        pins = MOTOR_PUSHER_PINS
+    else:
+        print("not a movement typ")
+
+
     for _ in range(abs(step_count)):
         # Move one step in direction
-        step(direction, delay)
+        step(direction, pins, delay)
 
 
-def step(direction: Direction, delay: float = MINIMUM_MOTOR_DELAY) -> None:
+def step(direction: Direction, pins: any, delay: float = MINIMUM_MOTOR_DELAY) -> None:
     """
     Moves motors one step in direction. Optional: Step delay.
     """
@@ -95,7 +106,7 @@ def step(direction: Direction, delay: float = MINIMUM_MOTOR_DELAY) -> None:
         # For each pin value
         for pin in range(HALFSTEP_PINS_COUNT):
             # Assigns corresponding motor pins to action from designated sequence
-            GPIO.output(MOTOR_PUSHER_PINS[pin], sequence[halfstep][pin])  # type: ignore
+            GPIO.output(pins[pin], sequence[halfstep][pin])  # type: ignore
             time.sleep(0.001)
         time.sleep(delay)
 
