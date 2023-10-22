@@ -48,20 +48,13 @@ def main() -> None:
     pin_setup()
 
     while True:
-        try:
-            print("Input step count: ")
-            steps = input()
-            if not isinstance(steps, int):
-                raise TypeError('Number of steps must be an int')
-            else:
-                push(steps)
-                
-        except:
-            break
+        print("Input step count: ")
+        steps = input()
+        if not isinstance(steps, int):
+            raise TypeError('Number of steps must be an int')
+        else:
+            push(steps)
     
-
-    pin_cleanup()
-
 
 def pin_setup() -> None:
     """
