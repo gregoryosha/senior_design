@@ -12,13 +12,31 @@ from enum import Enum
 
 import RPi.GPIO as GPIO
 
+
 # Defines motor spins
 CLOCKWISE = -1
 COUNTER_CLOCKWISE = 1
 
+# Enum for directions
+class Direction(Enum):
+    FORWARD = (COUNTER_CLOCKWISE, COUNTER_CLOCKWISE)
+    BACKWARD = (CLOCKWISE, CLOCKWISE)
+    LEFT = (CLOCKWISE, COUNTER_CLOCKWISE)
+    RIGHT = (COUNTER_CLOCKWISE, CLOCKWISE)
+
+# Reference lists
+TRANSLATIONAL_DIRECTIONS = (Direction.FORWARD, Direction.BACKWARD)
+ROTATIONAL_DIRECTIONS = (Direction.LEFT, Direction.RIGHT)
+
 # Refered constants
 STEPS_PER_ROTATION = 50
 MINIMUM_MOTOR_DELAY = 0.001
+
+RADIUS_WHEEL_MM = 45
+WHEEL_CIRCUMFERENCE = 2 * math.pi * RADIUS_WHEEL_MM
+
+TURNING_RADIUS_MM = 88
+TURNING_CIRCUMFERENCE = 2 * math.pi * TURNING_RADIUS_MM
 
 # Half-step stepper motor sequence
 HALFSTEP_SEQUENCE = (
