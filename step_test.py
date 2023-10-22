@@ -38,11 +38,11 @@ while True:
             print('motor running anti-clockwise\n')
             GPIO.output(motor_channel, (GPIO.HIGH,GPIO.LOW,GPIO.LOW,GPIO.HIGH))
             sleep(0.02)
-            GPIO.output(motor_channel, (GPIO.LOW,GPIO.LOW,GPIO.HIGH,GPIO.HIGH))
+            GPIO.output(motor_channel, (GPIO.LOW,GPIO.HIGH,GPIO.LOW,GPIO.HIGH))
             sleep(0.02)
             GPIO.output(motor_channel, (GPIO.LOW,GPIO.HIGH,GPIO.HIGH,GPIO.LOW))
             sleep(0.02)
-            GPIO.output(motor_channel, (GPIO.HIGH,GPIO.HIGH,GPIO.LOW,GPIO.LOW))
+            GPIO.output(motor_channel, (GPIO.HIGH,GPIO.HIGH,GPIO.HIGH,GPIO.LOW))
             sleep(0.02)
 
             
