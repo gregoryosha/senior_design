@@ -37,17 +37,13 @@ HALFSTEPS_COUNT = len(HALFSTEP_SEQUENCE)
 HALFSTEP_PINS_COUNT = len(HALFSTEP_SEQUENCE[0])
 
 # MOTOR_PUSHER_PINS = (31, 33, 35, 37)
-MOTOR_PUSHER_PINS = (37, 33, 35, 31)
+MOTOR_PUSHER_PINS = (31, 33, 35, 37)
 MOTOR_LIFT_PINS = (11, 13, 15, 16)
 
 
 def main() -> None:
     """Runs actions for testing sequence."""
     pin_setup()
-
-    for i in range(MOTOR_PUSHER_PINS):
-        print(f"pin {i+1}: ")
-        MOTOR_PUSHER_PINS[i] = int(input())
 
     while True:
         print("Input step count: ")
