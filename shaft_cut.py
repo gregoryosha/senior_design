@@ -51,7 +51,7 @@ def main() -> None:
         if not isinstance(steps, int):
             raise TypeError('Number of steps must be an int')
         else:
-            push(steps)
+            push(steps, 0.01)
     
 
 def pin_setup() -> None:
@@ -90,7 +90,6 @@ def step(direction: Direction, delay: float = MINIMUM_MOTOR_DELAY) -> None:
     """
     Moves motors one step in direction. Optional: Step delay.
     """
-    delay = 0.01
     # Defines the sequence for each motor from specified direction
     sequence = HALFSTEP_SEQUENCE[::direction.value]
     # For each halfstep in sequence
