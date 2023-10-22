@@ -87,7 +87,7 @@ def step(direction: Direction, delay: float = MINIMUM_MOTOR_DELAY) -> None:
     Moves motors one step in direction. Optional: Step delay.
     """
     # Defines the sequence for each motor from specified direction
-    sequence = HALFSTEP_SEQUENCE[::direction.value]
+    sequence = HALFSTEP_SEQUENCE[::direction]
     # For each halfstep in sequence
     for halfstep in range(HALFSTEPS_COUNT):
         # For each pin value
