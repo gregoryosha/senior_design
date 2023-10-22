@@ -7,11 +7,11 @@ from time import sleep
 import sys
 
 #assign GPIO pins for motor
-motor_channel = (29,31,33,35)  
+motor_channel = []
 for i in range(4):
     print(f"pin {i+1}: ")
     pin = int(input())
-    motor_channel[i] = pin;
+    motor_channel.append(pin)
 GPIO.setwarnings(False)
 GPIO.setmode(GPIO.BOARD)
 #for defining more than 1 GPIO channel as input/output use
