@@ -37,8 +37,8 @@ HALFSTEPS_COUNT = len(HALFSTEP_SEQUENCE)
 # Defines the number of pins used in sequence
 HALFSTEP_PINS_COUNT = len(HALFSTEP_SEQUENCE[0])
 
-# MOTOR_PUSHER_PINS = (11, 13, 15, 16)
-MOTOR_PUSHER_PINS = (31, 33, 35, 37)
+# MOTOR_PUSHER_PINS = (31, 33, 35, 37)
+MOTOR_PUSHER_PINS = (31, 37, 35, 33)
 MOTOR_LIFT_PINS = (11, 13, 15, 16)
 
 
@@ -103,7 +103,6 @@ def step(direction: Direction, delay: float = MINIMUM_MOTOR_DELAY) -> None:
         for pin in range(HALFSTEP_PINS_COUNT):
             # Assigns corresponding motor pins to action from designated sequence
             GPIO.output(MOTOR_PUSHER_PINS[pin], sequence[halfstep][pin])  # type: ignore
-           # GPIO.output(MOTOR_LIFT_PINS[pin], sequences[1][halfstep][pin])  # type: ignore
 
         time.sleep(delay)
 
