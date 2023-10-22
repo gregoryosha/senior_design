@@ -49,7 +49,7 @@ def main() -> None:
 
     while True:
         print("Input step count: ")
-        steps = input()
+        steps = int(input())
         if not isinstance(steps, int):
             raise TypeError('Number of steps must be an int')
         else:
