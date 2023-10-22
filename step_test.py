@@ -7,11 +7,14 @@ from time import sleep
 import sys
 
 #assign GPIO pins for motor
-motor_channel = []
-for i in range(4):
-    print(f"pin {i+1}: ")
-    pin = int(input())
-    motor_channel.append(pin)
+# motor_channel = []
+# for i in range(4):
+#     print(f"pin {i+1}: ")
+#     pin = int(input())
+#     motor_channel.append(pin)
+
+motor_channel = (29, 31, 33, 35)
+
 GPIO.setwarnings(False)
 GPIO.setmode(GPIO.BOARD)
 #for defining more than 1 GPIO channel as input/output use
@@ -22,13 +25,13 @@ while True:
     try:
         if(motor_direction == 'c'):
             print('motor running clockwise\n')
-            GPIO.output(motor_channel, (GPIO.HIGH,GPIO.LOW,GPIO.LOW,GPIO.HIGH))
-            sleep(0.02)
-            GPIO.output(motor_channel, (GPIO.HIGH,GPIO.HIGH,GPIO.LOW,GPIO.LOW))
+            GPIO.output(motor_channel, (GPIO.HIGH,GPIO.LOW,GPIO.HIGH,GPIO.LOW))
             sleep(0.02)
             GPIO.output(motor_channel, (GPIO.LOW,GPIO.HIGH,GPIO.HIGH,GPIO.LOW))
             sleep(0.02)
-            GPIO.output(motor_channel, (GPIO.LOW,GPIO.LOW,GPIO.HIGH,GPIO.HIGH))
+            GPIO.output(motor_channel, (GPIO.LOW,GPIO.HIGH,GPIO.LOW,GPIO.HIGH))
+            sleep(0.02)
+            GPIO.output(motor_channel, (GPIO.HIGH,GPIO.LOW,GPIO.LOW,GPIO.HIGH))
             sleep(0.02)
 
         elif(motor_direction == 'a'):
