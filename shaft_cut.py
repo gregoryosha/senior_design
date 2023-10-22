@@ -48,7 +48,7 @@ def main() -> None:
         if not isinstance(dist, int):
             raise TypeError('Number of steps must be an int')
         else:
-            push(dist, 0.01)
+            push(dist, 0.002)
     
 
 def pin_setup() -> None:
