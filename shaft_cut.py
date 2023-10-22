@@ -37,15 +37,17 @@ HALFSTEPS_COUNT = len(HALFSTEP_SEQUENCE)
 HALFSTEP_PINS_COUNT = len(HALFSTEP_SEQUENCE[0])
 
 # MOTOR_PUSHER_PINS = (31, 33, 35, 37)
-MOTOR_PUSHER_PINS = (37, 35, 33, 31)
+MOTOR_PUSHER_PINS = (37, 33, 35, 31)
 MOTOR_LIFT_PINS = (11, 13, 15, 16)
 
 
 def main() -> None:
     """Runs actions for testing sequence."""
     pin_setup()
-    print("Input desired delay")
-    delay = float(input())
+
+    for i in range(MOTOR_PUSHER_PINS):
+        print(f"pin {i+1}: ")
+        MOTOR_PUSHER_PINS[i] = int(input())
 
     while True:
         print("Input step count: ")
@@ -53,7 +55,7 @@ def main() -> None:
         if not isinstance(steps, int):
             raise TypeError('Number of steps must be an int')
         else:
-            push(steps, delay)
+            push(steps)
     
 
 def pin_setup() -> None:
@@ -92,6 +94,7 @@ def step(direction: Direction, delay: float = MINIMUM_MOTOR_DELAY) -> None:
     """
     Moves motors one step in direction. Optional: Step delay.
     """
+    delay = 0.01
     # Defines the sequence for each motor from specified direction
     sequence = HALFSTEP_SEQUENCE[::direction.value]
     # For each halfstep in sequence
