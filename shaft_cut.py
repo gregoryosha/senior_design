@@ -22,13 +22,9 @@ MINIMUM_MOTOR_DELAY = 0.001
 
 # Half-step stepper motor sequence
 HALFSTEP_SEQUENCE = (
-    (1, 0, 0, 0),
-    (1, 1, 0, 0),
-    (0, 1, 0, 0),
+    (1, 0, 1, 0),
     (0, 1, 1, 0),
-    (0, 0, 1, 0),
-    (0, 0, 1, 1),
-    (0, 0, 0, 1),
+    (0, 1, 0, 1),
     (1, 0, 0, 1),
 )
 # Defines a number of halfsteps in sequence
@@ -37,7 +33,7 @@ HALFSTEPS_COUNT = len(HALFSTEP_SEQUENCE)
 HALFSTEP_PINS_COUNT = len(HALFSTEP_SEQUENCE[0])
 
 # MOTOR_PUSHER_PINS = (31, 33, 35, 37)
-MOTOR_PUSHER_PINS = (31, 33, 29, 35)
+MOTOR_PUSHER_PINS = (29, 31, 33, 35)
 MOTOR_LIFT_PINS = (11, 13, 15, 16)
 
 
