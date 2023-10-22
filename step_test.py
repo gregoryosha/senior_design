@@ -10,7 +10,8 @@ import sys
 motor_channel = (29,31,33,35)  
 for i in range(4):
     print(f"pin {i+1}: ")
-    motor_channel[i] = int(input())
+    pin = int(input())
+    motor_channel[i] = pin;
 GPIO.setwarnings(False)
 GPIO.setmode(GPIO.BOARD)
 #for defining more than 1 GPIO channel as input/output use
