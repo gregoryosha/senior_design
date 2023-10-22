@@ -12,31 +12,14 @@ from enum import Enum
 
 import RPi.GPIO as GPIO
 
-
-# Defines motor spins
-CLOCKWISE = -1
-COUNTER_CLOCKWISE = 1
-
 # Enum for directions
 class Direction(Enum):
-    FORWARD = (COUNTER_CLOCKWISE, COUNTER_CLOCKWISE)
-    BACKWARD = (CLOCKWISE, CLOCKWISE)
-    LEFT = (CLOCKWISE, COUNTER_CLOCKWISE)
-    RIGHT = (COUNTER_CLOCKWISE, CLOCKWISE)
-
-# Reference lists
-TRANSLATIONAL_DIRECTIONS = (Direction.FORWARD, Direction.BACKWARD)
-ROTATIONAL_DIRECTIONS = (Direction.LEFT, Direction.RIGHT)
+    FORWARD = 1
+    BACKWARD = -1
 
 # Refered constants
 STEPS_PER_ROTATION = 50
 MINIMUM_MOTOR_DELAY = 0.001
-
-RADIUS_WHEEL_MM = 45
-WHEEL_CIRCUMFERENCE = 2 * math.pi * RADIUS_WHEEL_MM
-
-TURNING_RADIUS_MM = 88
-TURNING_CIRCUMFERENCE = 2 * math.pi * TURNING_RADIUS_MM
 
 # Half-step stepper motor sequence
 HALFSTEP_SEQUENCE = (
@@ -54,23 +37,28 @@ HALFSTEPS_COUNT = len(HALFSTEP_SEQUENCE)
 # Defines the number of pins used in sequence
 HALFSTEP_PINS_COUNT = len(HALFSTEP_SEQUENCE[0])
 
-# MOTOR_LEFT_PINS = (11, 13, 15, 16)
-MOTOR_LEFT_PINS = (31, 33, 35, 37)
-# MOTOR_RIGHT_PINS = (29, 31, 32, 33)
-MOTOR_RIGHT_PINS = (31, 29, 32, 33)
+# MOTOR_PUSHER_PINS = (11, 13, 15, 16)
+MOTOR_PUSHER_PINS = (31, 33, 35, 37)
+MOTOR_LIFT_PINS = (11, 13, 15, 16)
+
 
 
 def main() -> None:
     """Runs actions for testing sequence."""
     pin_setup()
 
-    move_forward()
-    time.sleep(1)
-    move_backward(200, 1)
-    time.sleep(1)
-    turn_left()
-    time.sleep(1)
-    turn_right()
+    while True:
+        try:
+            print("Input step count: ")
+            steps = input()
+            if not isinstance(steps, int):
+                raise TypeError('Number of steps must be an int')
+            else:
+                push(steps)
+                
+        except:
+            break
+    
 
     pin_cleanup()
 
@@ -82,7 +70,7 @@ def pin_setup() -> None:
     # Sets board mode
     GPIO.setmode(GPIO.BOARD)  # type: ignore
     # Sets all motor pins to output and disengages them
-    for pin in MOTOR_LEFT_PINS + MOTOR_RIGHT_PINS:
+    for pin in MOTOR_PUSHER_PINS + MOTOR_LIFT_PINS:
         GPIO.setup(pin, GPIO.OUT)  # type: ignore
         GPIO.output(pin, False)  # type: ignore
 
@@ -93,54 +81,24 @@ def pin_cleanup() -> None:
     """
     GPIO.cleanup()  # type: ignore
 
-
-def turn_degrees(degrees: float, time_seconds: float, direction: Direction) -> None:
-    """
-    Turns robot specified degrees in an amount of time in a direction.
-    """
-    # Raises error if not in rotational directions
-    if direction not in ROTATIONAL_DIRECTIONS:
-        raise ValueError("Invalid direction for rotational movement.")
-
-    # Calculates perimeter distance needed to travel
-    distance_mm = TURNING_CIRCUMFERENCE * degrees / 360
-    # Moves calculated distance
-    _rotate_motors((distance_mm / WHEEL_CIRCUMFERENCE), time_seconds, direction)
-
-
-def move_distance(
-    distance_mm: float, time_seconds: float, direction: Direction = Direction.FORWARD
-) -> None:
-    """
-    Turns motors a ground distance in an amount of time in a direction.
-    """
-    # Raises error if not in translational directions
-    if direction not in TRANSLATIONAL_DIRECTIONS:
-        raise ValueError("Invalid direction for translational movement.")
-
-    # Turns number of rotations needed to move distance
-    _rotate_motors((distance_mm / WHEEL_CIRCUMFERENCE), time_seconds, direction)
-
-
-def _rotate_motors(
-    number_rotations: float, time_seconds: float, direction: Direction
-) -> None:
+def push(step_count: int) -> None:
     """
     Turns motors a number of rotations in an amount of time in a direction.
     """
-    # Defines a number of steps
-    steps_count = int(STEPS_PER_ROTATION * number_rotations)
-
-    # Calculates a delay between pin activations
-    delay = time_seconds / steps_count / HALFSTEPS_COUNT / HALFSTEP_PINS_COUNT
+    delay = 0.1
 
     # For as many steps as specified:
-    for _ in range(steps_count):
+    if step_count < 0:
+        direction = Direction.BACKWARD
+    else:
+        direction = Direction.FORWARD
+
+    for _ in range(step_count):
         # Move one step in direction
-        _step_motors(direction, delay)
+        step(direction, delay)
 
 
-def _step_motors(direction: Direction, delay: float = MINIMUM_MOTOR_DELAY) -> None:
+def step(direction: Direction, delay: float = MINIMUM_MOTOR_DELAY) -> None:
     """
     Moves motors one step in direction. Optional: Step delay.
     """
@@ -155,51 +113,12 @@ def _step_motors(direction: Direction, delay: float = MINIMUM_MOTOR_DELAY) -> No
         # For each pin value
         for pin in range(HALFSTEP_PINS_COUNT):
             # Assigns corresponding motor pins to action from designated sequence
-            GPIO.output(MOTOR_LEFT_PINS[pin], sequences[0][halfstep][pin])  # type: ignore
-            GPIO.output(MOTOR_RIGHT_PINS[pin], sequences[1][halfstep][pin])  # type: ignore
+            GPIO.output(MOTOR_PUSHER_PINS[pin], sequences[0][halfstep][pin])  # type: ignore
+            GPIO.output(MOTOR_LIFT_PINS[pin], sequences[1][halfstep][pin])  # type: ignore
             # THIS TIMER WORKS BUT SHOULD IN BE WITHIN THIS LOOP OR THE ONE
             # BELOW, BECAUSE DO THE PINS NEED TIME BETWEEN EACH ONE ACTIVATING
             # OR JUST EACH HALFSTEP STAGE??? I'M SCARED TO TRY IT .･(>д<)･. -BK
             time.sleep(delay)
-
-
-# ======== DEFAULT FUNCTIONS ======== #
-
-
-def step(direction: Direction = Direction.FORWARD):
-    """
-    Steps motors forward in specified direction.
-    """
-    _step_motors(direction)
-
-
-def move_forward(distance_mm: float = 250, time_seconds: float = 3) -> None:
-    """
-    Moves robot forward. Optional: Distance, Time.
-    """
-    move_distance(distance_mm, time_seconds, Direction.FORWARD)
-
-
-def move_backward(distance_mm: float = 250, time_seconds: float = 3) -> None:
-    """
-    Moves robot forward. Optional: Distance, Time.
-    """
-    move_distance(distance_mm, time_seconds, Direction.BACKWARD)
-
-
-def turn_left(degrees: float = 90, time_seconds: float = 2) -> None:
-    """
-    Rotates robot to the left. Optional: Degrees, Time.
-    """
-    turn_degrees(degrees, time_seconds, Direction.LEFT)
-
-
-def turn_right(degrees: float = 90, time_seconds: float = 2) -> None:
-    """
-    Rotates robot to the right. Optional: Degrees, Time.
-    """
-    turn_degrees(degrees, time_seconds, Direction.RIGHT)
-
 
 # Runs main only from command line call instead of library call
 if __name__ == "__main__":
