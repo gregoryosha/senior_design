@@ -78,8 +78,6 @@ def push(step_count: int, delay: float) -> None:
     """
     Turns motors a number of rotations in an amount of time in a direction.
     """
-
-    # For as many steps as specified:
     if step_count < 0:
         direction = Direction.BACKWARD
     else:
