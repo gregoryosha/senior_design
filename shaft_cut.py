@@ -95,23 +95,15 @@ def step(direction: Direction, delay: float = MINIMUM_MOTOR_DELAY) -> None:
     """
     Moves motors one step in direction. Optional: Step delay.
     """
-    # Throws error if moving to quickly
-    if delay < MINIMUM_MOTOR_DELAY:
-        raise ValueError("Too fast to turn! Use a larger time!")
-
     # Defines the sequence for each motor from specified direction
-    sequences = tuple(HALFSTEP_SEQUENCE[::i] for i in direction.value)
+    sequence = HALFSTEP_SEQUENCE[::direction.value]
     # For each halfstep in sequence
     for halfstep in range(HALFSTEPS_COUNT):
         # For each pin value
         for pin in range(HALFSTEP_PINS_COUNT):
             # Assigns corresponding motor pins to action from designated sequence
-            GPIO.output(MOTOR_PUSHER_PINS[pin], sequences[0][halfstep][pin])  # type: ignore
-            GPIO.output(MOTOR_LIFT_PINS[pin], sequences[1][halfstep][pin])  # type: ignore
-            # THIS TIMER WORKS BUT SHOULD IN BE WITHIN THIS LOOP OR THE ONE
-            # BELOW, BECAUSE DO THE PINS NEED TIME BETWEEN EACH ONE ACTIVATING
-            # OR JUST EACH HALFSTEP STAGE??? I'M SCARED TO TRY IT .･(>д<)･. -BK
-            time.sleep(delay)
+            GPIO.output(MOTOR_PUSHER_PINS[pin], sequence[halfstep][pin])  # type: ignore
+           # GPIO.output(MOTOR_LIFT_PINS[pin], sequences[1][halfstep][pin])  # type: ignore
 
 # Runs main only from command line call instead of library call
 if __name__ == "__main__":
