@@ -18,7 +18,6 @@ class Direction(Enum):
     BACKWARD = -1
 
 # Refered constants
-STEPS_PER_ROTATION = 50
 MINIMUM_MOTOR_DELAY = 0.001
 
 # Half-step stepper motor sequence
@@ -40,7 +39,6 @@ HALFSTEP_PINS_COUNT = len(HALFSTEP_SEQUENCE[0])
 # MOTOR_PUSHER_PINS = (31, 33, 35, 37)
 MOTOR_PUSHER_PINS = (31, 33, 35, 37)
 MOTOR_LIFT_PINS = (11, 13, 15, 16)
-
 
 
 def main() -> None:
@@ -104,7 +102,7 @@ def step(direction: Direction, delay: float = MINIMUM_MOTOR_DELAY) -> None:
         for pin in range(HALFSTEP_PINS_COUNT):
             # Assigns corresponding motor pins to action from designated sequence
             GPIO.output(MOTOR_PUSHER_PINS[pin], sequence[halfstep][pin])  # type: ignore
-
+            time.sleep(0.001)
         time.sleep(delay)
 
 # Runs main only from command line call instead of library call
