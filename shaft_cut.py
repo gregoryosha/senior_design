@@ -73,7 +73,7 @@ def push(dist: int, delay: float) -> None:
     """
     Turns motors a number of rotations in an amount of time in a direction.
     """
-    step_count = 6.25 * dist
+    step_count = int(6.25 * dist)
     if step_count < 0:
         direction = Direction.BACKWARD
     else:
