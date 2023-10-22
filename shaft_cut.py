@@ -77,7 +77,7 @@ def push(step_count: int, delay: float) -> None:
     else:
         direction = Direction.FORWARD
 
-    for _ in range(step_count):
+    for _ in range(abs(step_count)):
         # Move one step in direction
         step(direction, delay)
 
@@ -87,7 +87,7 @@ def step(direction: Direction, delay: float = MINIMUM_MOTOR_DELAY) -> None:
     Moves motors one step in direction. Optional: Step delay.
     """
     # Defines the sequence for each motor from specified direction
-    sequence = HALFSTEP_SEQUENCE[::direction]
+    sequence = HALFSTEP_SEQUENCE[::direction.value]
     # For each halfstep in sequence
     for halfstep in range(HALFSTEPS_COUNT):
         # For each pin value
