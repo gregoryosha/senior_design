@@ -78,7 +78,7 @@ def push(step_count: int) -> None:
     """
     Turns motors a number of rotations in an amount of time in a direction.
     """
-    delay = 0.1
+    delay = 0.01
 
     # For as many steps as specified:
     if step_count < 0:
