@@ -105,6 +105,8 @@ def step(direction: Direction, delay: float = MINIMUM_MOTOR_DELAY) -> None:
             GPIO.output(MOTOR_PUSHER_PINS[pin], sequence[halfstep][pin])  # type: ignore
            # GPIO.output(MOTOR_LIFT_PINS[pin], sequences[1][halfstep][pin])  # type: ignore
 
+        time.sleep(delay)
+
 # Runs main only from command line call instead of library call
 if __name__ == "__main__":
     main()
