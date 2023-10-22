@@ -46,6 +46,8 @@ MOTOR_LIFT_PINS = (11, 13, 15, 16)
 def main() -> None:
     """Runs actions for testing sequence."""
     pin_setup()
+    print("Input desired delay")
+    delay = float(input())
 
     while True:
         print("Input step count: ")
@@ -53,7 +55,7 @@ def main() -> None:
         if not isinstance(steps, int):
             raise TypeError('Number of steps must be an int')
         else:
-            push(steps)
+            push(steps, delay)
     
 
 def pin_setup() -> None:
@@ -74,11 +76,10 @@ def pin_cleanup() -> None:
     """
     GPIO.cleanup()  # type: ignore
 
-def push(step_count: int) -> None:
+def push(step_count: int, delay: float) -> None:
     """
     Turns motors a number of rotations in an amount of time in a direction.
     """
-    delay = 0.01
 
     # For as many steps as specified:
     if step_count < 0:
