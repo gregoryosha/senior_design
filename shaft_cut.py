@@ -46,11 +46,11 @@ def main() -> None:
     """Runs actions for testing sequence."""
     pin_setup()
     try: 
-        while True:
-            print("\nInput pushing distance in mm (negatives are accepted): ")
-            dist = int(input())
-            move_motor(dist, 0.001, 'push')
+        print("\nInput pushing distance in mm (negatives are accepted): ")
+        dist = int(input())
+        move_motor(dist, 0.001, 'push')
 
+        while True:
             print("\nrun [r] or stop [s] cutting motor [r/s]")
             option = input()
             if (option == 'r'):
