@@ -45,9 +45,9 @@ def main() -> None:
     pin_setup()
 
     while True:
-        # print("Input pushing distance in mm (negatives are accepted): ")
-        # dist = int(input())
-        # move_motor(dist, 0.00001, 'push')
+        print("Input pushing distance in mm (negatives are accepted): ")
+        dist = int(input())
+        move_motor(dist, 0.00001, 'push')
 
         print("Input desired height in mm: ")
         h = int(input())
