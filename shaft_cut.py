@@ -52,19 +52,26 @@ def main() -> None:
             dist = int(input())
             move_motor(dist, 0.001, 'push')
 
-            print("\nrun cutting motor? [y/n]")
-            option = input()
-            if (option == 'y'):
-                print("\n Are you sure? [y/n]")
-                option == input()
+            if (option == 'n'):
+                print("\nrun cutting motor? [y/n]")
+                option = input()
                 if (option == 'y'):
-                    run_cutter(True)
-                else:
+                    print("\n Are you sure? [y/n]")
+                    option == input()
+                    if (option == 'y'):
+                        run_cutter(True)
+                    else:
+                        print("not running motor...")
+                elif (option == 'n'):
                     print("not running motor...")
-            elif (option == 'n'):
-                print("not running motor...")
+                else:
+                    print("Not an input")
             else:
-                print("Not an input")
+                print("\nstop cutting motor? [y/n]")
+                option = input()
+                if (option == 'y'):
+                    print("stopping motor...")
+                    run_cutter(False)
 
 
             print("\nInput desired height in mm: ")
