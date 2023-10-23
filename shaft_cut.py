@@ -35,7 +35,9 @@ HALFSTEP_PINS_COUNT = len(HALFSTEP_SEQUENCE[0])
 
 # MOTOR_PUSHER_PINS = (31, 33, 35, 37)
 MOTOR_PUSHER_PINS = (29, 31, 33, 35)
-MOTOR_LIFT_PINS = (32, 36, 38, 40)
+MOTOR_R_LIFT_PINS = (32, 36, 38, 40)
+MOTOR_L_LIFT_PINS = (11, 13, 15, 16)
+
 
 
 def main() -> None:
@@ -49,7 +51,7 @@ def main() -> None:
 
         print("Input desired height in mm: ")
         h = int(input())
-        move_motor(h, 0.0001, 'lift')
+        move_motor(h, 0.001, 'lift')
 
 
     
@@ -61,7 +63,7 @@ def pin_setup() -> None:
     # Sets board mode
     GPIO.setmode(GPIO.BOARD)  # type: ignore
     # Sets all motor pins to output and disengages them
-    for pin in MOTOR_PUSHER_PINS + MOTOR_LIFT_PINS:
+    for pin in MOTOR_PUSHER_PINS + MOTOR_R_LIFT_PINS + MOTOR_L_LIFT_PINS:
         GPIO.setup(pin, GPIO.OUT)  # type: ignore
         GPIO.output(pin, False)  # type: ignore
 
@@ -82,20 +84,13 @@ def move_motor(dist: int, delay: float, move_type: str) -> None:
     else:
         direction = Direction.FORWARD
 
-    if move_type == 'lift':
-        pins = MOTOR_LIFT_PINS
-    elif move_type == 'push':
-        pins = MOTOR_PUSHER_PINS
-    else:
-        print("not a movement typ")
-
 
     for _ in range(abs(step_count)):
         # Move one step in direction
-        step(direction, pins, delay)
+        step(direction, move_type, delay)
 
 
-def step(direction: Direction, pins: any, delay: float = MINIMUM_MOTOR_DELAY) -> None:
+def step(direction: Direction, move_type: str, delay: float = MINIMUM_MOTOR_DELAY) -> None:
     """
     Moves motors one step in direction. Optional: Step delay.
     """
@@ -105,9 +100,13 @@ def step(direction: Direction, pins: any, delay: float = MINIMUM_MOTOR_DELAY) ->
     for halfstep in range(HALFSTEPS_COUNT):
         # For each pin value
         for pin in range(HALFSTEP_PINS_COUNT):
-            # Assigns corresponding motor pins to action from designated sequence
-            GPIO.output(pins[pin], sequence[halfstep][pin])  # type: ignore
-            time.sleep(0.001)
+            if (move_type == 'lift'):
+                GPIO.output(MOTOR_L_LIFT_PINS[pin], sequence[halfstep][pin])  # type: ignore
+                GPIO.output(MOTOR_R_LIFT_PINS[pin], sequence[halfstep][pin])  # type: ignore
+            elif (move_type == 'push'):
+                GPIO.output(MOTOR_PUSHER_PINS[pin], sequence[halfstep][pin])  # type: ignore
+
+            # Assigns corresponding motor pins to action from designated sequenc
         time.sleep(delay)
 
 # Runs main only from command line call instead of library call
