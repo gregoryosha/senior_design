@@ -51,7 +51,7 @@ def main() -> None:
 
         print("Input desired height in mm: ")
         h = int(input())
-        move_motor(h, 0.001, 'lift')
+        move_motor(h, 0.0001, 'lift')
 
 
     
@@ -105,7 +105,7 @@ def step(direction: Direction, move_type: str, delay: float = MINIMUM_MOTOR_DELA
                 GPIO.output(MOTOR_R_LIFT_PINS[pin], sequence[halfstep][pin])  # type: ignore
             elif (move_type == 'push'):
                 GPIO.output(MOTOR_PUSHER_PINS[pin], sequence[halfstep][pin])  # type: ignore
-
+            time.sleep(0.001)
             # Assigns corresponding motor pins to action from designated sequenc
         time.sleep(delay)
 
