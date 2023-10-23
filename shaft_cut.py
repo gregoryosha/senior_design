@@ -44,7 +44,6 @@ CUTTER_PIN = 7
 
 def main() -> None:
     """Runs actions for testing sequence."""
-    option = 'n'
     pin_setup()
     try: 
         while True:
@@ -52,26 +51,17 @@ def main() -> None:
             dist = int(input())
             move_motor(dist, 0.001, 'push')
 
-            if (option == 'n'):
-                print("\nrun cutting motor? [y/n]")
-                option = input()
-                if (option == 'y'):
-                    print("\n Are you sure? [y/n]")
-                    option == input()
-                    if (option == 'y'):
-                        run_cutter(True)
-                    else:
-                        print("not running motor...")
-                elif (option == 'n'):
-                    print("not running motor...")
-                else:
-                    print("Not an input")
+            print("\nrun [r] or stop [s] cutting motor [r/s]")
+            option = input()
+            if (option == 'r'):
+               print("running motor!")
+               run_cutter(True)
+            elif (option == 's'):
+                print("stopping motor...")
+                run_cutter(False)
             else:
-                print("\nstop cutting motor? [y/n]")
-                option = input()
-                if (option == 'y'):
-                    print("stopping motor...")
-                    run_cutter(False)
+                print("Not an input")
+           
 
 
             print("\nInput desired height in mm: ")
