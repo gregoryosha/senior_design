@@ -89,7 +89,7 @@ def pin_setup() -> None:
     
     #Set up cutting motor
     GPIO.setup(CUTTER_PIN, GPIO.OUT)
-    GPIO.output(pin, False)  # type: ignore
+    GPIO.output(CUTTER_PIN, False)  # type: ignore
 
 
 
