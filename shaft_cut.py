@@ -56,6 +56,7 @@ def main() -> None:
             option = input()
             if (option == 'y'):
                 print("\n Are you sure? [y/n]")
+                option == input()
                 if (option == 'y'):
                     run_cutter(True)
                 else:
@@ -102,7 +103,7 @@ def pin_cleanup() -> None:
     GPIO.cleanup()  # type: ignore
 
 def run_cutter(input: bool):
-    GPIO.output(CUTTER_PIN, True)
+    GPIO.output(CUTTER_PIN, input)
 
 
 def move_motor(dist: int, delay: float, move_type: str) -> None:
