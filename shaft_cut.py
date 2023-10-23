@@ -106,6 +106,7 @@ def step(direction: Direction, move_type: str, delay: float = MINIMUM_MOTOR_DELA
             elif (move_type == 'push'):
                 GPIO.output(MOTOR_PUSHER_PINS[pin], sequence[halfstep][pin])  # type: ignore
             # Assigns corresponding motor pins to action from designated sequenc
+            time.sleep(0.0001)
         time.sleep(delay)
 
 # Runs main only from command line call instead of library call
