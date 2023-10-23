@@ -109,6 +109,19 @@ def step(direction: Direction, move_type: str, delay: float = MINIMUM_MOTOR_DELA
             time.sleep(0.001)
         time.sleep(delay)
 
+    #Set to low
+    for pin in range(HALFSTEP_PINS_COUNT):
+            if (move_type == 'lift'):
+                GPIO.output(MOTOR_L_LIFT_PINS[pin], False)  # type: ignore
+                GPIO.output(MOTOR_R_LIFT_PINS[pin], False)  # type: ignore
+            elif (move_type == 'push'):
+                GPIO.output(MOTOR_PUSHER_PINS[pin], False)  # type: ignore
+            # Assigns corresponding motor pins to action from designated sequenc
+            time.sleep(0.001)
+
+    
+    
+
 # Runs main only from command line call instead of library call
 if __name__ == "__main__":
     main()
