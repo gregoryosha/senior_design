@@ -133,7 +133,7 @@ def step(direction: Direction, move_type: str, delay: float = MINIMUM_MOTOR_DELA
             if (move_type == 'lift'):
                 GPIO.output(MOTOR_L_LIFT_PINS[pin], sequence[halfstep][pin])  # type: ignore
                 GPIO.output(MOTOR_R_LIFT_PINS[pin], sequence[halfstep][pin])  # type: ignore
-                delay = 0.2
+                delay = 0.05
             elif (move_type == 'push'):
                 GPIO.output(MOTOR_PUSHER_PINS[pin], sequence[halfstep][pin])  # type: ignore
             # Assigns corresponding motor pins to action from designated sequenc
