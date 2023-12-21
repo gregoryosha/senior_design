@@ -1,23 +1,17 @@
 # senior_design
-Senior design project
+The shaft cutter runs the electronics off a single Arduino integrated with a cnc shield. 
 
-home ip: 192.168.86.248
+## Electrical Components
+List of electrical systems:
+* Microcontrollers: Arduino R3 UNO with CNC sheild
+* Motors: Stepper motors
+* Sensors: Limit switches on each axis 
+* Input: LCD screen and rotary encoder
+
+## File Descriptions
+`headless_shaft.ino` uses no LCD output and is run directly from the computer serial input. `shaft_LCDmenu.ino` is the fully integrated version, which requires no computer to run the system. All control is input through the LCD menu with the rotary encoder. 
+
+## Prototype 
+The earlier prototype runs off a raspberry Pi and has limited cutting ability. It has no ability to discern absolute distance since it has no limit switches. It allows for movement from the current stepper position, which is enough for a full cutting pass. 
 
 
-__________Console Connection________________
-To see available ports:
-ls /dev/cu.*
-
-To connect in (try one of these with the N replaced)
-screen /dev/cu.SLAB_USBtoUART 115200
-screen /dev/cu.usbserial-NNNN 115200
-
-username: pi
-
-_______Useful Raspi commands__________
-To start hosting the flask server:
-    export FLASK_APP=server.py
-    flask run --host=0.0.0.0
-raspi-config
-ifconfig
-ping
